@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Building Color Selector</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/three.min.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/GLTFLoader.js"></script>
+    <script src="js/threex.domevents.js"></script>
+    <script src="js/TweenMax.min.js"></script>
+
+    <style>
+        .strech {
+            position: absolute;
+            top: 0px;
+            left: 20%;
+            bottom: 0px;
+            right: 20%;
+            cursor: pointer;
+        }
+        
+        .currentColor {
+            padding-left: 12px;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <button style="position:fixed;top:20px;left:20px" id="getPosition">get position</button> -->
+    <div class="container" style="height:650px !important;margin-top:100px;border:1px solid #000;padding: 0px;border-radius: 5px;">
+        <div class="row" style="height:100%;width:100%;overflow:hidden;margin:0px;padding:0px;">
+
+
+            <div id="accordion" class="col-md-3" style="padding:0px !important;border:1px solid #000;">
+
+                <!--Wall Color-->
+                <div class="card panel">
+                    <div class="card-header wallColorHeader" style="cursor: pointer;" data-toggle="collapse" href="#collapseThree">
+                        <a class="collapsed card-link">
+                            Wall Color
+                        </a>
+                    </div>
+                    <div id="collapseThree" class="collapse show" data-parent="#accordion">
+                        <div class="card-body" key="wall">
+
+                            <div class="row currentColor">
+                                <b>Current Color :</b>&nbsp;&nbsp;
+                                <span>None </span>
+                            </div>
+
+                            <div class="row">
+
+                                <div data-toggle="tooltip" title="Black" color="0x262625" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#262625;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Vintage Burgundy" color="0x4b3033" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#4b3033;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="True Burgundy" color="0x74252d" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#74252d;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Cardinal Red" color="0x941e1a" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#941e1a;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Barn Red" class="col-md-3 color" color="0x8d3c2d" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#8d3c2d;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Tan" class="col-md-3 color" color="0xb59a78" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#b59a78;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Sandstone" class="col-md-3 color" color="0xc3b99e" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#c3b99e;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Pebble Beige" class="col-md-3 color" color="0xdeceb1" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#deceb1;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="White" class="col-md-3 color" color="0xf2f2f2" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#f2f2f2;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Clay" class="col-md-3 color" color="0xa09484" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#a09484;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Pewter Gray" class="col-md-3 color" color="0x87847f" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#87847f;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Quaker Gray" class="col-md-3 color" color="0x5f5e59" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#5f5e59;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Blue" class="col-md-3 color" color="0x4c7184" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#4c7184;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="King Blue" class="col-md-3 color" color="0x1482b8" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#1482b8;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Evergreen" class="col-md-3 color" color="0x405f51" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#405f51;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Earth Brown" class="col-md-3 color" color="0x674232" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#674232;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Haley Orange" class="col-md-3 color" color="0xff7f00" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#ff7f00;"></div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Roof Color-->
+                <div class="card panel">
+                    <div class="card-header" style="cursor: pointer;" data-toggle="collapse" href="#collapseOne">
+                        <a class="card-link">
+                            Roof Color
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="collapse" data-parent="#accordion">
+                        <div class="card-body" key="roof">
+
+                            <div class="row currentColor">
+                                <b>Current Color :</b>&nbsp;&nbsp;
+                                <span>None </span>
+                            </div>
+
+                            <div class="row">
+
+                                <div data-toggle="tooltip" title="Black" color="0x262625" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#262625;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Vintage Burgundy" color="0x4b3033" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#4b3033;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="True Burgundy" color="0x74252d" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#74252d;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Cardinal Red" color="0x941e1a" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#941e1a;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Barn Red" class="col-md-3 color" color="0x8d3c2d" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#8d3c2d;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Tan" class="col-md-3 color" color="0xb59a78" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#b59a78;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Sandstone" class="col-md-3 color" color="0xc3b99e" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#c3b99e;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Pebble Beige" class="col-md-3 color" color="0xdeceb1" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#deceb1;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="White" class="col-md-3 color" color="0xf2f2f2" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#f2f2f2;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Clay" class="col-md-3 color" color="0xa09484" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#a09484;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Pewter Gray" class="col-md-3 color" color="0x87847f" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#87847f;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Quaker Gray" class="col-md-3 color" color="0x5f5e59" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#5f5e59;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Blue" class="col-md-3 color" color="0x4c7184" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#4c7184;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="King Blue" class="col-md-3 color" color="0x1482b8" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#1482b8;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Evergreen" class="col-md-3 color" color="0x405f51" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#405f51;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Earth Brown" class="col-md-3 color" color="0x674232" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#674232;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Haley Orange" class="col-md-3 color" color="0xff7f00" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#ff7f00;"></div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Trim Color-->
+                <div class="card panel">
+                    <div class="card-header" style="cursor: pointer;" data-toggle="collapse" href="#collapseTwo">
+                        <a class="collapsed card-link">
+                            Trim Color
+                        </a>
+                    </div>
+                    <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                        <div class="card-body" key="trim">
+
+                            <div class="row currentColor">
+                                <b>Current Color :</b>&nbsp;&nbsp;
+                                <span>None </span>
+                            </div>
+
+                            <div class="row">
+
+                                <div data-toggle="tooltip" title="Black" color="0x262625" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#262625;"></div>
+                                    <!-- <div class="strech" style="z-index:2;background-image: url('./assets/bg.png');"></div> -->
+                                </div>
+                                <div data-toggle="tooltip" title="Vintage Burgundy" color="0x4b3033" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#4b3033;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="True Burgundy" color="0x74252d" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#74252d;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Cardinal Red" color="0x941e1a" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#941e1a;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Barn Red" class="col-md-3 color" color="0x8d3c2d" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#8d3c2d;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Tan" class="col-md-3 color" color="0xb59a78" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#b59a78;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Sandstone" class="col-md-3 color" color="0xc3b99e" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#c3b99e;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Pebble Beige" class="col-md-3 color" color="0xdeceb1" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#deceb1;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="White" class="col-md-3 color" color="0xf2f2f2" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#f2f2f2;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Clay" class="col-md-3 color" color="0xa09484" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#a09484;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Pewter Gray" class="col-md-3 color" color="0x87847f" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#87847f;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Quaker Gray" class="col-md-3 color" color="0x5f5e59" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#5f5e59;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Blue" class="col-md-3 color" color="0x4c7184" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#4c7184;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="King Blue" class="col-md-3 color" color="0x1482b8" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#1482b8;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Evergreen" class="col-md-3 color" color="0x405f51" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#405f51;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Earth Brown" class="col-md-3 color" color="0x674232" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#674232;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Haley Orange" class="col-md-3 color" color="0xff7f00" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#ff7f00;"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Wainscot-->
+                <div class="card panel">
+                    <div class="card-header" style="cursor: pointer;" data-toggle="collapse" href="#collapseFour">
+                        <a class="collapsed card-link">
+                            Wainscot
+                        </a>
+                    </div>
+                    <div id="collapseFour" class="collapse" data-parent="#accordion">
+                        <div class="card-body" key="wainscot">
+
+                            <div class="row currentColor">
+                                <b>Current Color :</b>&nbsp;&nbsp;
+                                <span>None </span>
+                            </div>
+
+                            <div class="row">
+
+                                <div data-toggle="tooltip" title="Black" color="0x262625" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#262625;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Vintage Burgundy" color="0x4b3033" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#4b3033;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="True Burgundy" color="0x74252d" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#74252d;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Cardinal Red" color="0x941e1a" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#941e1a;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Barn Red" class="col-md-3 color" color="0x8d3c2d" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#8d3c2d;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Tan" class="col-md-3 color" color="0xb59a78" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#b59a78;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Sandstone" class="col-md-3 color" color="0xc3b99e" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#c3b99e;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Pebble Beige" class="col-md-3 color" color="0xdeceb1" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#deceb1;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="White" class="col-md-3 color" color="0xf2f2f2" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#f2f2f2;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Clay" class="col-md-3 color" color="0xa09484" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#a09484;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Pewter Gray" class="col-md-3 color" color="0x87847f" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#87847f;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Quaker Gray" class="col-md-3 color" color="0x5f5e59" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#5f5e59;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Blue" class="col-md-3 color" color="0x4c7184" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#4c7184;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="King Blue" class="col-md-3 color" color="0x1482b8" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#1482b8;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Evergreen" class="col-md-3 color" color="0x405f51" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#405f51;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Earth Brown" class="col-md-3 color" color="0x674232" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#674232;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Haley Orange" class="col-md-3 color" color="0xff7f00" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#ff7f00;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Remove Wainscot" class="col-md-3 removeWainscot" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="border:1px solid #000; display:flex; align-items:center; justify-content:center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 16.538l-4.592-4.548 4.546-4.587-1.416-1.403-4.545 4.589-4.588-4.543-1.405 1.405 4.593 4.552-4.547 4.592 1.405 1.405 4.555-4.596 4.591 4.55 1.403-1.416z"/></svg>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Wainscot Trim-->
+                <div class="card panel" id="wainscotTrimPanel" style="display:none;">
+                    <div class="card-header" style="cursor: pointer;" data-toggle="collapse" href="#collapseFive">
+                        <a class="collapsed card-link">
+                            Wainscot Trim
+                        </a>
+                    </div>
+                    <div id="collapseFive" class="collapse" data-parent="#accordion">
+                        <div class="card-body" key="wainscotTrim">
+
+                            <div class="row currentColor">
+                                <b>Current Color :</b>&nbsp;&nbsp;
+                                <span>None </span>
+                            </div>
+
+                            <div class="row">
+
+                                <div data-toggle="tooltip" title="Black" color="0x262625" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#262625;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Vintage Burgundy" color="0x4b3033" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#4b3033;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="True Burgundy" color="0x74252d" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#74252d;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Cardinal Red" color="0x941e1a" class="col-md-3 color" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#941e1a;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Barn Red" class="col-md-3 color" color="0x8d3c2d" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#8d3c2d;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Tan" class="col-md-3 color" color="0xb59a78" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#b59a78;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Sandstone" class="col-md-3 color" color="0xc3b99e" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#c3b99e;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Pebble Beige" class="col-md-3 color" color="0xdeceb1" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#deceb1;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="White" class="col-md-3 color" color="0xf2f2f2" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#f2f2f2;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Clay" class="col-md-3 color" color="0xa09484" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#a09484;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Pewter Gray" class="col-md-3 color" color="0x87847f" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#87847f;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Quaker Gray" class="col-md-3 color" color="0x5f5e59" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#5f5e59;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Blue" class="col-md-3 color" color="0x4c7184" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#4c7184;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="King Blue" class="col-md-3 color" color="0x1482b8" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#1482b8;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Evergreen" class="col-md-3 color" color="0x405f51" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#405f51;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Earth Brown" class="col-md-3 color" color="0x674232" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#674232;"></div>
+
+                                </div>
+                                <div data-toggle="tooltip" title="Haley Orange" class="col-md-3 color" color="0xff7f00" style="height:40px;margin-bottom:10px;">
+                                    <div class="strech" style="z-index:1;background-color:#ff7f00;"></div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="position:absolute;bottom:0px;left:0px;right:0px;padding:5px;">
+                    <button id="reset" class="btn">
+                        <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M13.818 16.646c-1.273.797-2.726 1.256-4.202 1.354l-.537-1.983c2.083-.019 4.132-.951 5.49-2.724 2.135-2.79 1.824-6.69-.575-9.138l-1.772 2.314-1.77-6.469h6.645l-1.877 2.553c3.075 2.941 3.681 7.659 1.423 11.262l7.357 7.357-2.828 2.828-7.354-7.354zm-11.024-1.124c-1.831-1.745-2.788-4.126-2.794-6.522-.005-1.908.592-3.822 1.84-5.452 1.637-2.138 4.051-3.366 6.549-3.529l.544 1.981c-2.087.015-4.142.989-5.502 2.766-2.139 2.795-1.822 6.705.589 9.154l1.774-2.317 1.778 6.397h-6.639l1.861-2.478z"/></svg>
+                        &nbsp;Reset to default
+                    </button>
+                </div>
+
+
+            </div>
+
+
+            <div id="animationBox" class="col-md-9 " style="margin:0px;padding:0px;border:1px solid #000;">
+
+                <select class="form-control" id="switchModel" style="position:absolute;top:0px;right:0px;">
+                    <option value="none">Select A Building Type</option>
+                    <option value="12-24'" >12'-24' Wide Metal Building</option>
+                    <option value="26-30'" >26'-30' Wide Metal Building</option>
+                    <option value="HeavyDuty">32'-60' Wide Commercial Building</option>
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <script src="js/color-picker.js "></script>
+</body>
+
+</html>

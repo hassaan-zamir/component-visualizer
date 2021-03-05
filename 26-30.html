@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/three.min.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/DragControls.js"></script>
+    <script src="js/GLTFLoader.js"></script>
+    <script src="js/threex.domevents.js"></script>
+    <script src="js/colladaLoader.js"></script>
+    <script src="js/TweenMax.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Container -->
+    <div class="container-fluid" style="padding-top: 50px;">
+
+        <!-- Title -->
+        <div class="row" style="padding-bottom:30px;">
+            <div class="col-md-1"></div>
+            <div class="col-md-11">
+                <h3>26'-30' Wide Metal Building</h3>
+            </div>
+        </div>
+        <!-- Title End -->
+
+
+        <div class="row" id="row">
+
+            <div class="col-md-1"></div>
+            <!--Sidebar-->
+            <div class="col-md-2" style="margin:0px;padding:0px;">
+                <div id="sidebar" class="sidebar">
+                    <div class="bg-light border-right" id="sidebar-wrapper">
+                        <div class="list-group list-group-flush">
+
+                            <div class="row" style="margin: 0px; padding-top: 10px;padding-left:10px; text-align:center;border-bottom:1px solid grey;">
+                                <p style="color:red;letter-spacing:1px; font-size:15px;text-align:center;">Select a component</p>
+                            </div>
+
+                            <div id="topViewComponents" class="components">
+
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x2c3e50" key="cornerTrim" target="CornerTrim,Lean-to_Frame#2">Corner Trim</button>
+                                </div>
+
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xFF0000" key="gableEnd" target="Gable_1,Gable_2">Gable End</button>
+                                </div>
+
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xe84118" key="garageDoor" target="Circle.002_0,Circle.006_0">Garage Doors</button>
+                                </div>
+
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xe84118" key="insulation" target="Insulation,Insulation-Strip,Insulation_strip_Bottom">Insulation</button>
+                                </div>
+
+
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x000000" key="jTrim" target="Windows#1,Windows#4,Walk_in_door#1">J Trim</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x353b48" key="lTrim" target="L-Trim,Lean-to_Frame001">L Trim</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xf9ca24" key="ridgeCap" target="ridgecap">Ridge Cap</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x8b0000" key="roof" target="Verticle_Trim_Main,Roof_Sheeting,Roof_Sheeting003">Roof</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xe84118" key="roofTrim" target="Verticle_Trim_Main001,Verticle_Trim_Lean-to001">Roof Trim</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x008080" key="sidePanel" target="Sheeting_Leftsample002#1,Sheeting_Leftsample001#1,Sheeting_Left#1,Sheeting_Right#1,Lean_Sheeting,Gable_1,Gable_2">Side Panels</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xFF0000" key="wainscot" target="Lean_Sheeting#2,Sheeting_Leftsample002#2,Sheeting_Leftsample001#2,Sheeting_Left#2,Sheeting_Right#2">Wainscot</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x12CBC4" key="door" target="Walk_in_door#2">Walk in Door</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xFFFF00" key="window" target="Windows">Windows</button>
+                                </div>
+
+
+                            </div>
+
+                            <div id="frontViewComponents" class="components">
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xEA2027" key="baseRail" target="Base_rail">Base Rail</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xe84118" key="brace" target="Braces,Lean-to_Braces">Braces</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x182C61" key="frame" target="LegsFront,LegsBack,Frame_1">Frame</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xFF0000" key="gableEnd" target="Gable_1,Gable_2">Gable End</button>
+                                </div>
+
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xe84118" key="garageDoor" target="Circle.002_0,Circle.006_0">Garage Doors</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xf9ca24" key="hatChannel" target="Hat_Channel002,Lean-to_Hat_Channel">Hat Channel</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xe84118" key="insulation" target="Insulation,Insulation-Strip,Insulation_strip_Bottom">Insulation</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x182C61" key="legs" target="LegsRight,LegsLeft">Legs</button>
+                                </div>
+
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xe84118" key="roofTrim" target="Verticle_Trim_Main001,Verticle_Trim_Lean-to001">Roof Trim</button>
+                                </div>
+
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x487eb0" key="bow" target="Bows,Lean-to_Bows">Trusses</button>
+                                </div>
+
+
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xFF0000" key="wainscot" target="Lean_Sheeting#2,Sheeting_Leftsample002#2,Sheeting_Leftsample001#2,Sheeting_Left#2,Sheeting_Right#2">Wainscot</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x12CBC4" key="door" target="Walk_in_door#2">Walk In Door</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xFFFF00" key="window" target="Windows">Windows</button>
+                                </div>
+
+                            </div>
+
+                            <div id="sideViewComponents" class="components">
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xe84118" key="brace" target="Braces,Lean-to_Braces">Braces</button>
+                                </div>
+
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x182C61" key="frame" target="LegsFront,LegsBack,Frame_1">Frame</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xe84118" key="garageDoor" target="Circle.002_0,Circle.006_0">Garage Doors</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xf9ca24" key="hatChannel" target="Hat_Channel002,Lean-to_Hat_Channel">Hat Channel</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xe84118" key="insulation" target="Insulation,Insulation-Strip,Insulation_strip_Bottom">Insulation</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x182C61" key="legs" target="LegsRight,LegsLeft">Legs</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x8b0000" key="roof" target="Verticle_Trim_Main,Roof_Sheeting,Roof_Sheeting003">Roof</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xe84118" key="roofTrim" target="Verticle_Trim_Main001,Verticle_Trim_Lean-to001">Roof Trim</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xf9ca24" key="ridgeCap" target="ridgecap">Ridge Cap</button>
+                                </div>
+
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0x12CBC4" key="door" target="Walk_in_door">Walk in Door</button>
+                                </div>
+                                <div class="row sidebarBtn">
+                                    <button class="list-group-item list-group-item-action bg-light btnBorder highlight" color="0xFFFF00" key="window" target="Windows">Windows</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Sidebar End-->
+
+            <!--Canvas-->
+            <div class="col-md-8" id="container" style="margin:0px;padding:0px;height:70vh;">
+                <div id="componentDetails">
+                    <h4 id="heading"></h4>
+                    <p id="description" style="color:#fff;">Some Description Here</p>
+                </div>
+                <div id="views">
+                    <span class="btn btn-danger topView">Top View</span>
+                    <span class="btn btn-danger frontView">End View</span>
+                    <span class="btn btn-danger sideView">Side View</span>
+                    <!-- <span class="btn btn-danger" id="getPosition">Get Position</span> -->
+                </div>
+            </div>
+            <!--Canvas End-->
+        </div>
+
+        <!-- <div class="row" id="positionBox"> -->
+
+    </div>
+    </div>
+    <!-- Container End -->
+
+
+
+
+    <script src="js/26-30.js"></script>
+</body>
+
+</html>
