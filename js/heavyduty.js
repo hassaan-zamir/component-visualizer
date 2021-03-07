@@ -1,7 +1,26 @@
 $(document).ready(function() {
 
+    //default values
+    let maxDistance = 2500;
+    let frontViewVariables = {
+        'object_position' : [500, -320.8410257854748, 0],
+        'camera_position' : [1556.4909185790777, -27.674014480042647, -259.3721171766616],
+        'camera_rotation' : [2.9962355455421505, 1.4505049453418806, -2.9972713613552884]
+    };
+    let sideViewVariables = {
+        'object_position' : [400, -320.8410257854748, 0],
+        'camera_position' : [-0.14933075208800295, 0.8490411224726102, -1566.545527337573],
+        'camera_rotation' : [-3.1410506705931156, -0.00009532485784620723, -3.141592601925336]
+    };
+    let topViewVariables = {
+        'object_position' : [500, -320.8410257854748, 0],
+        'camera_position' : [-1117.0560863254632, 572.5680651502078, 979.4094878880843],
+        'camera_rotation' : [-0.52902302187666, -0.7776533732756856, -0.38923808457170905]
+    };
+
     //global variables
     let object;
+    let loading = true;
     let allowHighlight = true;
     let lastHighlightedKey = 'key';
     let originalMaterials = [];
@@ -88,6 +107,7 @@ $(document).ready(function() {
         "Circle.007_1": "garageDoor",
 
         "Roof_Sheeting001": "roof",
+        // "Verticle Trim_Main": "roof",
         "Roof_Sheeting002": "roof",
         "Roof_Sheeting003": "roof",
 
@@ -188,7 +208,7 @@ $(document).ready(function() {
         ],
         "legs": [
             "Legs",
-            "Galvanized steel tubing (14 gauge or 12 gauge) which connects the roof bow or truss to the base rail."
+            "Galvanized steel tubing (14 gauge or 12 gauge) which connects the roof truss to the base rail."
         ],
         "hatChannel": [
             "Hat Channel",
@@ -214,7 +234,7 @@ $(document).ready(function() {
     let currentView = 'topViewComponents';
     let highlightHistory = [];
 
-    let renderer, scene, camera, controls;
+    let renderer, scene, camera, controls, dragging;
     //global variables end
 
     //helper functions
@@ -308,6 +328,12 @@ $(document).ready(function() {
 
         $('#container canvas').mouseup(function(event) {
             allowHighlight = true;
+            controls.enabled = true;
+            dragging.enabled = false;
+        });
+
+        $('#container canvas').on("contextmenu", (e) => {
+            e.preventDefault(); return false;
         });
 
         $('#container canvas').on("contextmenu", (e) => { e.preventDefault(); return false; });
@@ -315,11 +341,23 @@ $(document).ready(function() {
         $('#container canvas').mousedown(function(event) {
 
             allowHighlight = false;
+            switch(event.which){
+                case 1:
+                    if(clickedOn === "selected"){
+                        clickedOn = "n/a";
+                    }
+                    dragging.enabled = false;
+                    controls.enabled = true;
+                    break;
+                case 3:
+                    dragging.enabled = true;
+                    controls.enabled = false;
+                    break;
+                default:
+                    console.log('Invalid Click');
+            }
             $('#componentDetails').hide();
             clearHighlight();
-            if (clickedOn == "selected") {
-                clickedOn = "n/a";
-            }
         });
 
         // scene
@@ -460,11 +498,27 @@ $(document).ready(function() {
             controls.userPanSpeed = 0.0;
             // controls.target.set(object.position.x, object.position.y, object.position.z);
             // controls.maxPolarAngle = Math.PI * 0.48;
-            // controls.maxDistance = 1500;
+            controls.maxDistance = maxDistance;
             controls.enabled = true;
 
+            dragging = new THREE.DragControls([object] , camera, renderer.domElement);
+            dragging.enabled = false;
+            dragging.addEventListener('drag', function(event){
+                if(event.object.position.y < -315){
+                    event.object.position.y = -315;
+                }else if(event.object.position.y > 215){
+                    event.object.position.y = 215;
+                }
+                if(event.object.position.x < -735){
+                    event.object.position.x = -735;
+                }else if(event.oject.position.y > 680){
+                    event.object.position.x = 680;
+                }
+            });
 
             animate();
+            loading = false;
+            $('#loader').remove();
         });
 
 
@@ -476,9 +530,10 @@ $(document).ready(function() {
     //Managing Events
 
     $('.topView').click(function() {
-        object.position.set(500, -320.8410257854748, 0);
-        camera.rotation.set(-0.52902302187666, -0.7776533732756856, -0.38923808457170905);
-        camera.position.set(-1117.0560863254632, 572.5680651502078, 979.4094878880843);
+        if(loading) return false;
+        object.position.set(...topViewVariables.object_position);
+        camera.rotation.set(...topViewVariables.camera_rotation);
+        camera.position.set(...topViewVariables.camera_position);
         currentView = 'topViewComponents';
         clearHighlight();
         $('.components').hide();
@@ -487,9 +542,11 @@ $(document).ready(function() {
     });
 
     $('.frontView').click(function() {
-        object.position.set(500, -320.8410257854748, 0);
-        camera.rotation.set(2.9962355455421505, 1.4505049453418806, -2.9972713613552884);
-        camera.position.set(1556.4909185790777, -27.674014480042647, -259.3721171766616);
+        if(loading) return false;
+        
+        object.position.set(...frontViewVariables.object_position);
+        camera.rotation.set(...frontViewVariables.camera_rotation);
+        camera.position.set(...frontViewVariables.camera_position);
         currentView = 'frontViewComponents';
         clearHighlight();
         $('.components').hide();
@@ -519,9 +576,11 @@ $(document).ready(function() {
     });
 
     $('.sideView').click(function() {
-        object.position.set(400, -320.8410257854748, 0);
-        camera.rotation.set(-3.1410506705931156, -0.00009532485784620723, -3.141592601925336);
-        camera.position.set(-0.14933075208800295, 0.8490411224726102, -1566.545527337573);
+        if(loading) return false;
+        
+        object.position.set(...sideViewVariables.object_position);
+        camera.rotation.set(...sideViewVariables.camera_rotation);
+        camera.position.set(...sideViewVariables.camera_position);
         currentView = 'sideViewComponents';
         clearHighlight();
         $('.components').hide();
@@ -540,6 +599,7 @@ $(document).ready(function() {
             'DoorFrame001',
             'Base_railRight',
             'Z-trim_Right',
+            'Z-trim_Right001',
             'Window_Frameout002',
             'Window_Frameout005',
             'L-trim004',
@@ -571,7 +631,7 @@ $(document).ready(function() {
     });
 
     $('.highlight').click(function() {
-
+        if(loading) return false;
         var key = $(this).attr('key');
 
         if (lastHighlightedKey != key) {
@@ -599,6 +659,7 @@ $(document).ready(function() {
 
 
             find = scene.getObjectByName(target);
+            
             if (find) {
                 if (find.isMesh) {
 

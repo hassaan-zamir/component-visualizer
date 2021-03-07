@@ -2,7 +2,7 @@ $(document).ready(function() {
 
     //global variables
     let object;
-
+    let loading = true;
     let allowHighlight = true;
     let lastHighlightedKey = 'key';
     let originalMaterials = [];
@@ -162,7 +162,7 @@ $(document).ready(function() {
         ],
         "legs": [
             "Legs",
-            "Galvanized steel tubing (14 gauge or 12 gauge) which connects the roof bow or truss to the base rail.",
+            "Galvanized steel tubing (14 gauge or 12 gauge) which connects the roof truss to the base rail.",
         ],
         "hatChannel": [
             "Hat Channel",
@@ -180,7 +180,7 @@ $(document).ready(function() {
     let currentView = 'topViewComponents';
     let highlightHistory = [];
 
-    let renderer, scene, camera, controls;
+    let renderer, scene, camera, controls, dragging;
     //global variables end
 
     //helper functions
@@ -274,18 +274,34 @@ $(document).ready(function() {
 
         $('#container canvas').mouseup(function(event) {
             allowHighlight = true;
+            controls.enabled = true;
+            dragging.enabled = false;
         });
 
+        $('#container canvas').on("contextmenu" , (e) => {
+            e.preventDefault(); return false;
+        });
 
         $('#container canvas').mousedown(function(event) {
 
             allowHighlight = false;
+            switch(event.which){
+                case 1:
+                    if(clickedOn === "selected"){
+                        clickedOn = "n/a";
+                    }
+                    dragging.enabled = false;
+                    controls.enabled = true;
+                    break;
+                case 3:
+                    dragging.enabled = true;
+                    controls.enabled = false;
+                    break;
+                default:
+                    console.log('invalid click');
+            }
             $('#componentDetails').hide();
             clearHighlight();
-            if (clickedOn == "selected") {
-                clickedOn = "n/a";
-            }
-
         });
 
         // scene
@@ -426,10 +442,27 @@ $(document).ready(function() {
             controls.userPan = false;
             controls.userPanSpeed = 0.0;
             // controls.maxPolarAngle = Math.PI * 0.48;
-            // controls.maxDistance = 1500;
+            controls.maxDistance = 2500;
             controls.enabled = true;
 
+            dragging = new THREE.DragControls([object], camera, renderer.domElement);
+            dragging.enabled = false;
+            dragging.addEventListener('drag', function(event){
+                if(event.object.position.y < -315){
+                    event.object.position.y = -315;
+                }else if(event.object.position.y > 215){
+                    event.object.position.y = 215;
+                }
+                if(event.object.position.x < -735){
+                    event.object.position.x = -735;
+                }else if(event.oject.position.y > 680){
+                    event.object.position.x = 680;
+                }
+            });
+
             animate();
+            loading = false;
+            $('#loader').remove();
         });
 
 
@@ -444,6 +477,7 @@ $(document).ready(function() {
 
     $('.topView').click(function() {
 
+        if(loading) return false;
         object.position.set(0, -320.8410257854748, 0);
         camera.rotation.set(-0.4361141777497734, -0.9223495266578665, -0.35565137561042276);
         camera.position.set(-1500.688735787021, 383.793738428656, 1005.506190055299);
@@ -459,14 +493,10 @@ $(document).ready(function() {
 
     $('.frontView').click(function() {
 
+        if(loading) return false;
         object.position.set(0, -320.8410257854748, 0);
         camera.rotation.set(-2.991915339877779, 1.1361645832114986, 3.005652183789453);
         camera.position.set(1122.556595604761, 77.71108711697838, -515.3078203981711);
-
-
-
-
-
         currentView = 'frontViewComponents';
         clearHighlight();
         $('.components').hide();
@@ -494,6 +524,7 @@ $(document).ready(function() {
 
     $('.sideView').click(function() {
 
+        if(loading) return false;
         object.position.set(220, -320.8410257854748, 0);
         camera.rotation.set(3.071009796703626, -0.026331453506230996, 3.139731229088313);
         camera.position.set(-56.356904476980404, -108.63000703135208, -1405.077198225507);
@@ -523,6 +554,7 @@ $(document).ready(function() {
     });
 
     $('#getPosition').click(function() {
+
         let string;
         string = "camera.rotation.set(" + camera.rotation.x + "," + camera.rotation.y + "," + camera.rotation.z + ");<br/>";
         string += "camera.position.set(" + camera.position.x + "," + camera.position.y + "," + camera.position.z + ");";
@@ -532,7 +564,7 @@ $(document).ready(function() {
 
     $('.highlight').click(function() {
 
-
+        if(loading) return false;
         var key = $(this).attr('key');
 
         if (lastHighlightedKey != key) {

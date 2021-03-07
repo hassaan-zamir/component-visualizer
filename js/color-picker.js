@@ -1,9 +1,15 @@
 $(document).ready(function() {
 
     //GLOBAL
-    let object = null;
+    let objects = {
+        '12-24\'': null,
+        '26-30\'': null,
+        'HeavyDuty': null,
+    };
+
+
     let currentModel = '12-24\'';
-    let renderer, scene, camera, controls;
+    let renderer, scene, camera, controls, dragging;
     let wainscotRemoved = false;
     let currentWallColor = null;
 
@@ -23,7 +29,8 @@ $(document).ready(function() {
             ],
             "meshes_HeavyDuty": [
                 "Verticle_Trim_Main",
-                "Roof_Sheeting",
+                "Roof_Sheeting001",
+                "Roof_Sheeting004",
                 "Roof_Sheeting003",
                 "ridgecap",
             ],
@@ -47,7 +54,7 @@ $(document).ready(function() {
                 "Walk_in_door#1",
                 "L-Trim",
                 "Lean-to_Frame001",
-                "Verticle_Trim_Main001",
+                "Verticle_Trim_Main002",
                 "Verticle_Trim_Lean-to001"
 
             ],
@@ -179,26 +186,7 @@ $(document).ready(function() {
         // }
     }
 
-    //helper functions
-    function setAngles() {
-        if (camera == undefined || camera == null || object == null || object == undefined) {
-            console.log('camera/object is undefined');
-            return;
-        }
-        if (currentModel == "HeavyDuty") {
-            object.rotation.set(0, 0, 0);
-            object.position.set(13.713436288261196, -5.772002327240196, -3.8456083457414465);
-            camera.position.set(30.667813091567428, 5.869568823509786, -40.19978930790952);
-            camera.rotation.set(-2.9036414677106315, 0.8887972480614169, 2.9554796055560524);
-            object.scale.set(0.57, 0.57, 0.57);
-        } else {
-            camera.position.set(-29.61546168932172, 12.734287260961437, 23.838957747097826);
-            camera.rotation.set(-0.5628414762614354, -0.8306081398772137, -0.4359405568334018);
-            object.position.set(0, -2, 2);
-            object.rotation.set(0.008, 0, 0);
-            object.scale.set(0.57, 0.57, 0.57);
-        }
-    }
+
 
     function switchColor(mesh, materialClone, color) {
 
@@ -272,44 +260,111 @@ $(document).ready(function() {
         }
     }
 
-    function loadModel(modelName) {
+    function displayModel(modelName){
+        if (objects[currentModel]) {
+            scene.remove(objects[currentModel]);
+        }
+        objects[modelName].name = modelName;
+        objects[modelName].position.set(0, 0, 0);
+        controls.target.set(0, 0, 0);
+        console.log(modelName,objects[modelName]);
+        scene.add(objects[modelName]);
+        currentModel = modelName;
 
-        if (object != null) {
-            scene.remove(object);
+        if (camera == undefined || camera == null || objects[currentModel] == null || objects[currentModel] == undefined) {
+            console.log('camera/object is undefined');
+            return;
+        }
+        if (currentModel == "HeavyDuty") {
+            objects[currentModel].rotation.set(0, 0, 0);
+            objects[currentModel].position.set(13.713436288261196, -5.772002327240196, -3.8456083457414465);
+            camera.position.set(30.667813091567428, 5.869568823509786, -40.19978930790952);
+            camera.rotation.set(-2.9036414677106315, 0.8887972480614169, 2.9554796055560524);
+            objects[currentModel].scale.set(0.57, 0.57, 0.57);
+        } else {
+            camera.position.set(-29.61546168932172, 12.734287260961437, 23.838957747097826);
+            camera.rotation.set(-0.5628414762614354, -0.8306081398772137, -0.4359405568334018);
+            objects[currentModel].position.set(0, -2, 2);
+            objects[currentModel].rotation.set(0.008, 0, 0);
+            objects[currentModel].scale.set(0.57, 0.57, 0.57);
         }
 
+        dragging = new THREE.DragControls([objects[modelName]] , camera, renderer.domElement);
+        dragging.enabled = false;
+        controls.enabled = true;
+        // dragging.addEventListener('drag', function(event) {
+        //     console.log('dragging', event.object.position.x,event.object.position.y);
+        // });
+        
+    }
+    async function loadModel() {
+        
         var loader = new THREE.GLTFLoader();
         loader.setCrossOrigin('anonymous');
-
-        var url = "./assets/color-picker/" + modelName + ".glb";
-
-        loader.load(url, function(data) {
+        
+        await loader.load("./assets/color-picker/12-24'.glb", function(data) {
             for (var i = 0; i < data.scene.children.length; i++) {
                 model = data.scene.children[i];
-                model.traverse(n => {
-                    if (n.isMesh) {
-                        n.castShadow = true;
-                        n.receiveShadow = true;
+                model.traverse(n => { 
+                    if (n.isMesh) { n.castShadow = true;  n.receiveShadow = true;
                         if (n.material.map) {
                             n.material.map.anisotropy = 15;
-                        }
-                    }
-                });
+                }}});
             }
             gltf = data;
             if (gltf.scene !== undefined) {
-                object = gltf.scene; // default scene
+                objects["12-24'"] = gltf.scene; // default scene
             } else if (gltf.scenes.length > 0) {
-                object = gltf.scenes[0]; // other scene
+                objects["12-24'"] = gltf.scenes[0]; // other scene
+            }
+        });
+
+        await loader.load("./assets/color-picker/26-30'.glb", function(data) {
+            for (var i = 0; i < data.scene.children.length; i++) {
+                model = data.scene.children[i];
+                model.traverse(n => { 
+                    if (n.isMesh) { n.castShadow = true;  n.receiveShadow = true;
+                        if (n.material.map) {
+                            n.material.map.anisotropy = 15;
+                }}});
+            }
+            gltf = data;
+            if (gltf.scene !== undefined) {
+                objects["26-30'"] = gltf.scene; // default scene
+            } else if (gltf.scenes.length > 0) {
+                objects["26-30'"] = gltf.scenes[0]; // other scene
+            }
+        });
+
+        await loader.load("./assets/color-picker/HeavyDuty.glb", function(data) {
+            for (var i = 0; i < data.scene.children.length; i++) {
+                model = data.scene.children[i];
+                model.traverse(n => { 
+                    if (n.isMesh) { n.castShadow = true;  n.receiveShadow = true;
+                        if (n.material.map) {
+                            n.material.map.anisotropy = 15;
+                }}});
+            }
+            gltf = data;
+            if (gltf.scene !== undefined) {
+                objects["HeavyDuty"] = gltf.scene; // default scene
+            } else if (gltf.scenes.length > 0) {
+                objects["HeavyDuty"] = gltf.scenes[0]; // other scene
             }
 
-            object.name = modelName;
-            object.position.set(0, 0, 0);
-            controls.target.set(0, 0, 0);
-            scene.add(object);
-            console.log(object);
-            setAngles();
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.userPan = false;
+            controls.userPanSpeed = 0.0;
+            controls.maxDistance = 100;
+            controls.enabled = true;  
+            displayModel('12-24\'');
+            animate();
+            $('#loader').remove();
+            
         });
+
+        
+        
 
     }
 
@@ -331,6 +386,30 @@ $(document).ready(function() {
         $('#animationBox').append(renderer.domElement);
         $('#animationBox canvas').addClass('canvasBg');
 
+        $('#animationBox canvas').mouseup(function(event) {
+            controls.enabled = true;
+            dragging.enabled = false;
+        });
+
+        $('#animationBox canvas').on("contextmenu", (e) =>{
+            e.preventDefault(); return false;
+        });
+
+        $('#animationBox canvas').mousedown(function(event) {
+            switch(event.which){
+                case 1:
+                    dragging.enabled = false;
+                    controls.enabled = true;
+                    break;
+                case 3:
+                    dragging.enabled = true;
+                    controls.enabled = false;
+                    break;
+                default:
+                    console.log('invalid click');
+            }
+        });
+
 
 
         // scene
@@ -341,19 +420,18 @@ $(document).ready(function() {
         camera = new THREE.PerspectiveCamera(40, containerWidth / containerHeight, 1, 10000);
 
 
-        scene.add(new THREE.AmbientLight(0xADD8E6, 0.05));
-        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-        hemilight = new THREE.HemisphereLight(0xffffed, 0xffffed, 1);
+        scene.add(new THREE.AmbientLight(0xffffff , 0.7));
+        hemilight = new THREE.HemisphereLight(0xffffff , 0xffffff , 0.5);
         scene.add(hemilight);
 
-        spotlight = new THREE.SpotLight(0xffffff, 0.4);
+        spotlight = new THREE.SpotLight(0xF5F5DC , 0.4);
         spotlight.castShadow = true;
         spotlight.shadow.mapSize.width = 1024 * 4;
         spotlight.shadow.mapSize.height = 1024 * 4;
         spotlight.shadow.bias = -0.0001;
         scene.add(spotlight);
-        //
-        light = new THREE.PointLight(0xffffff, 4);
+        
+        light = new THREE.PointLight(0xF5F5DC , 1.5);
         light.position.set(0, 0, 0);
         scene.add(light);
 
@@ -362,14 +440,11 @@ $(document).ready(function() {
             console.log(item, loaded, total);
         };
 
-        loadModel('12-24\'');
 
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.userPan = false;
-        controls.userPanSpeed = 0.0;
-        controls.maxDistance = 100;
-        controls.enabled = true;
+        loadModel();
 
+        
+        
     }
 
     function animate() {
@@ -400,8 +475,8 @@ $(document).ready(function() {
     $('#getPosition').click(function() {
         console.log('camera position', camera.position.x + "," + camera.position.y + "," + camera.position.y);
         console.log('camera rotation', camera.rotation.x + "," + camera.rotation.y + "," + camera.rotation.y);
-        console.log('object position', object.position.x + "," + object.position.y + "," + object.position.y);
-        console.log('camera rotation', object.rotation.x + "," + object.rotation.y + "," + object.rotation.y);
+        console.log('object position', objects[currentModel].position.x + "," + objects[currentModel].position.y + "," + objects[currentModel].position.y);
+        console.log('camera rotation', objects[currentModel].rotation.x + "," + objects[currentModel].rotation.y + "," + objects[currentModel].rotation.y);
     });
     //on model switch
     $('#switchModel').change(function() {
@@ -419,7 +494,7 @@ $(document).ready(function() {
                 $('#wainscotTrimPanel').hide();
             }
             console.log('loading model');
-            loadModel(value);
+            displayModel(value);
             currentModel = value;
 
 
@@ -469,7 +544,7 @@ $(document).ready(function() {
             i++;
         });
 
-        loadModel(currentModel);
+        displayModel(currentModel);
 
         $('.currentColor span').html('None');
         wainscotRemoved = false;
@@ -477,6 +552,6 @@ $(document).ready(function() {
     });
 
     init();
-    animate();
+    
 
 });

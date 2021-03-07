@@ -2,6 +2,7 @@ $(document).ready(function() {
 
     //global variables
     let object;
+    let loading = true;
     let allowHighlight = true;
     let lastHighlightedKey = 'key';
     let originalMaterials = [];
@@ -163,7 +164,7 @@ $(document).ready(function() {
         ],
         "legs": [
             "Legs",
-            "Galvanized steel tubing (14 gauge or 12 gauge) which connects the roof bow or truss to the base rail.",
+            "Galvanized steel tubing (14 gauge or 12 gauge) which connects the roof truss to the base rail.",
         ],
         "hatChannel": [
             "Hat Channel",
@@ -181,7 +182,7 @@ $(document).ready(function() {
     let currentView = 'topViewComponents';
     let highlightHistory = [];
 
-    let renderer, scene, camera, controls;
+    let renderer, scene, camera, controls, dragging;
 
     //global variables end
 
@@ -278,16 +279,33 @@ $(document).ready(function() {
 
         $('#container canvas').mouseup(function(event) {
             allowHighlight = true;
+            controls.enabled = true;
+            dragging.enabled = false;
         });
 
+        $('#container canvas').on("contextmenu" , (e) => {
+            e.preventDefault(); return false;
+        })
         $('#container canvas').mousedown(function(event) {
 
             allowHighlight = false;
+            switch(event.which){
+                case 1:
+                    if(clickedOn === "selected"){
+                        clickedOn = "n/a";
+                    }
+                    dragging.enabled = false;
+                    controls.enabled = true;
+                    break;
+                case 3:
+                    dragging.enabled = true;
+                    controls.enabled = false;
+                    break;
+                default: 
+                    console.log('invalid click');
+            }
             $('#componentDetails').hide();
             clearHighlight();
-            if (clickedOn == "selected") {
-                clickedOn = "n/a";
-            }
 
         });
 
@@ -425,12 +443,27 @@ $(document).ready(function() {
             controls.userPanSpeed = 0.0;
             // controls.target.set(object.position.x, object.position.y, object.position.z);
             // controls.maxPolarAngle = Math.PI * 0.48;
-            // controls.maxDistance = 1500;
+            controls.maxDistance = 2500;
             controls.enabled = true;
 
+            dragging = new THREE.DragControls([object], camera,renderer.domElement);
+            dragging.enabled = false;
+            dragging.addEventListener('drag', function(event){
+                if(event.object.position.y < -315){
+                    event.object.position.y = -315;
+                }else if(event.object.position.y > 215){
+                    event.object.position.y = 215;
+                }
+                if(event.object.position.x < -735){
+                    event.object.position.x = -735;
+                }else if(event.oject.position.y > 680){
+                    event.object.position.x = 680;
+                }
+            });
 
             animate();
-
+            loading = false;
+            $('#loader').remove();
         });
 
 
@@ -439,6 +472,8 @@ $(document).ready(function() {
 
     //Manage Events
     $('.topView').click(function() {
+
+        if(loading) return false;
         object.position.set(100, -328.8410257854748, -100);
         camera.rotation.set(-0.42598112485593215, -0.9373025247363975, -0.3506091595099484);
         camera.position.set(-1437.0043474957197, 361.19602562153375, 1002.6610491904695);
@@ -450,6 +485,8 @@ $(document).ready(function() {
     });
 
     $('.frontView').click(function() {
+
+        if(loading) return false;
         object.position.set(100, -328.8410257854748, -100);
         camera.rotation.set(3.1022847141220007, 1.127291173927749, -3.1060842677272125);
         camera.position.set(1316.335693287534, -24.57493434419413, -624.8680634725472);
@@ -479,6 +516,8 @@ $(document).ready(function() {
     });
 
     $('.sideView').click(function() {
+
+        if(loading) return false;
         object.position.set(240, -328.8410257854748, -100);
         camera.rotation.set(3.0857112688964685, -0.007112309324829443, 3.1411947970491307);
         camera.position.set(-10.645716663699794, -83.59841598604946, -1494.4400522582528);
@@ -516,6 +555,7 @@ $(document).ready(function() {
 
     $('.highlight').click(function() {
 
+        if(loading) return false;
         var key = $(this).attr('key');
 
         if (lastHighlightedKey != key) {
