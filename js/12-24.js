@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     //global variables
-    let object;
+    let group,object,groundMesh;
     let loading = true;
     let allowHighlight = true;
     let lastHighlightedKey = 'key';
@@ -330,11 +330,11 @@ $(document).ready(function() {
 
         const groundMaterial = new THREE.MeshLambertMaterial({ map: groundTexture });
 
-        let mesh = new THREE.Mesh(new THREE.PlaneGeometry(20000, 20000), groundMaterial);
-        mesh.position.y = -250;
-        mesh.rotation.x = -Math.PI / 2;
-        mesh.receiveShadow = true;
-        scene.add(mesh);
+        groundMesh = new THREE.Mesh(new THREE.PlaneGeometry(20000, 20000), groundMaterial);
+        groundMesh.position.y = -250;
+        groundMesh.rotation.x = -Math.PI / 2;
+        groundMesh.receiveShadow = true;
+        // scene.add(groundMesh);
 
         //lighting
         scene.add(new THREE.AmbientLight(0xADD8E6, 0.05));
@@ -436,16 +436,21 @@ $(document).ready(function() {
 
             object.name = "Model";
             console.log("object", object);
-            scene.add(object);
+
+            group = new THREE.Group(); //create a container
+            group.add(object); //add a mesh with geometry to it
+            group.add(groundMesh);
+            scene.add(group); 
+            // scene.add(object);
 
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.userPan = false;
             controls.userPanSpeed = 0.0;
             // controls.maxPolarAngle = Math.PI * 0.48;
-            controls.maxDistance = 2500;
+            controls.maxDistance = 2200;
             controls.enabled = true;
 
-            dragging = new THREE.DragControls([object], camera, renderer.domElement);
+            dragging = new THREE.DragControls([group], camera, renderer.domElement);
             dragging.enabled = false;
             dragging.addEventListener('drag', function(event){
                 if(event.object.position.y < -315){
